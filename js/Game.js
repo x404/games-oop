@@ -10,8 +10,7 @@ const list = document.querySelector(".list");
 
 const FINISHCOUNT = 10;
 let start = false;
-let
-// blink cellcountSuccess = 0;
+let countSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
 let flag = false;
