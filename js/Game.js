@@ -1,3 +1,7 @@
+/*
+ * Game
+ */
+
 // create object and grid
 let objOfCells = {};
 const CELLCOUNTS = 100;
@@ -6,7 +10,8 @@ const list = document.querySelector(".list");
 
 const FINISHCOUNT = 10;
 let start = false;
-let countSuccess = 0;
+let
+// blink cellcountSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
 let flag = false;
@@ -110,6 +115,7 @@ class Game {
     return rand;
   }
 
+  // blink cell
   blinkCell() {
     //  if cell was active and no pressed it
     if (!flag) {
@@ -139,6 +145,7 @@ class Game {
     flag = false;
   }
 
+  // update status Cell in Object
   updateStatusCellInObj(id, key) {
     objOfCells[id][key] = true;
   }

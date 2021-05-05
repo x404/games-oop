@@ -1,5 +1,5 @@
 /*
- * Modal
+ * Modal with results of game
  */
 
 class Modal {
