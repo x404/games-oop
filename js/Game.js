@@ -49,33 +49,33 @@ class Game {
     fragment.appendChild(div);
   }
 
-  // start() {
-  //   timeout = +document.querySelector(".i-delay").value;
-  //   if (timeout > 0 && typeof timeout === "number") {
-  //     if (start) reset();
-  //     if (errorInput && document.querySelectorAll(".error").length > 0)
-  //       document.querySelector(".error").remove();
-  //     // starting position
-  //     const arr = Object.entries(objOfCells);
-  //     const rnd = this.randomInteger(arr.length - 1);
-  //     const _id = arr[rnd][1]._id;
+  startGame() {
+    timeout = +document.querySelector(".i-delay").value;
+    if (timeout > 0 && typeof timeout === "number") {
+      if (start) reset();
+      if (errorInput && document.querySelectorAll(".error").length > 0)
+        document.querySelector(".error").remove();
+      // starting position
+      const arr = Object.entries(objOfCells);
+      const rnd = this.randomInteger(arr.length - 1);
+      const _id = arr[rnd][1]._id;
 
-  //     document.querySelector(".btn-start").classList.add("d-none");
-  //     // set active cell
-  //     document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
+      document.querySelector(".btn-start").classList.add("d-none");
+      // set active cell
+      document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
 
-  //     // start timer
-  //     prevId = _id;
-  //     timer = setInterval(this.blinkCell.bind(this), timeout);
-  //     start = true;
-  //     errorInput = false;
-  //   } else {
-  //     if (!errorInput) {
-  //       list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
-  //     }
-  //     errorInput = true;
-  //   }
-  // }
+      // start timer
+      prevId = _id;
+      timer = setInterval(this.blinkCell.bind(this), timeout);
+      start = true;
+      errorInput = false;
+    } else {
+      if (!errorInput) {
+        list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
+      }
+      errorInput = true;
+    }
+  }
 
   checkResult() {
     countSuccess = Object.entries(objOfCells).filter((el) => el[1].success == true).length;
@@ -143,36 +143,7 @@ class Game {
   }
 
   eventsListeners() {
-    document.querySelector(".btn-start").addEventListener(
-      "click",
-      function () {
-        timeout = +document.querySelector(".i-delay").value;
-        if (timeout > 0 && typeof timeout === "number") {
-          if (start) reset();
-          if (errorInput && document.querySelectorAll(".error").length > 0)
-            document.querySelector(".error").remove();
-          // starting position
-          const arr = Object.entries(objOfCells);
-          const rnd = this.randomInteger(arr.length - 1);
-          const _id = arr[rnd][1]._id;
-
-          document.querySelector(".btn-start").classList.add("d-none");
-          // set active cell
-          document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
-
-          // start timer
-          prevId = _id;
-          timer = setInterval(this.blinkCell.bind(this), timeout);
-          start = true;
-          errorInput = false;
-        } else {
-          if (!errorInput) {
-            list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
-          }
-          errorInput = true;
-        }
-      }.bind(this)
-    );
+    document.querySelector(".btn-start").addEventListener("click", () => this.startGame());
 
     document.querySelector(".list").addEventListener(
       "click",
@@ -186,7 +157,7 @@ class Game {
           if (this.checkResult()) {
             clearInterval(timer);
             this.blinkCell();
-            timer = setInterval(this.blinkCell, timeout);
+            timer = setInterval(this.blinkCell.bind(this), timeout);
           }
 
           target.classList.remove("cell-active");
