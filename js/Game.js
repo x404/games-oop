@@ -49,6 +49,7 @@ class Game {
     fragment.appendChild(div);
   }
 
+  // start game
   startGame() {
     timeout = +document.querySelector(".i-delay").value;
     if (timeout > 0 && typeof timeout === "number") {
@@ -77,6 +78,7 @@ class Game {
     }
   }
 
+  // check data (success and error cells) in Object
   checkResult() {
     countSuccess = Object.entries(objOfCells).filter((el) => el[1].success == true).length;
     countError = Object.entries(objOfCells).filter((el) => el[1].error == true).length;
@@ -96,6 +98,7 @@ class Game {
     return true;
   }
 
+  // update num of Count Elements in HTML
   updateCountElements(countSuccess, countError) {
     humanCountEl.textContent = countSuccess;
     computerCountEl.textContent = countError;
@@ -112,8 +115,6 @@ class Game {
     if (!flag) {
       document.querySelector(".cell-active").classList.add("cell-error");
       document.querySelector(".cell-active").classList.remove("cell-active");
-
-      //   console.log("prevId=", prevId);
       this.updateStatusCellInObj(prevId, "error");
     }
 
@@ -142,28 +143,27 @@ class Game {
     objOfCells[id][key] = true;
   }
 
+  // update Status Cell in Grid and update status in Object
+  updateCell(e) {
+    const target = e.target;
+    if (target.classList.contains("cell-active")) {
+      const id = target.dataset.id;
+      flag = true;
+      this.updateStatusCellInObj(id, "success");
+
+      if (this.checkResult()) {
+        clearInterval(timer);
+        this.blinkCell();
+        timer = setInterval(this.blinkCell.bind(this), timeout);
+      }
+
+      target.classList.remove("cell-active");
+      target.classList.add("cell-success");
+    }
+  }
+
   eventsListeners() {
     document.querySelector(".btn-start").addEventListener("click", () => this.startGame());
-
-    document.querySelector(".list").addEventListener(
-      "click",
-      function (e) {
-        const target = e.target;
-        if (target.classList.contains("cell-active")) {
-          const id = target.dataset.id;
-          flag = true;
-          this.updateStatusCellInObj(id, "success");
-
-          if (this.checkResult()) {
-            clearInterval(timer);
-            this.blinkCell();
-            timer = setInterval(this.blinkCell.bind(this), timeout);
-          }
-
-          target.classList.remove("cell-active");
-          target.classList.add("cell-success");
-        }
-      }.bind(this)
-    );
+    document.querySelector(".list").addEventListener("click", (e) => this.updateCell(e));
   }
 }
