@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="content">
+        <div class="d-flex flex-wrap list"></div>
+        <div>
+          <label for="delay">Задержка, мс</label>
+          <input type="number" id="delay" class="form-control i-delay" value="1200" min="0" />
+        </div>
+        <button type="button" class="btn-start">Начать</button>
+
+        <div class="online-score">
+          <p>Score:</p>
+          <p>You: <span id="human_count">0</span></p>
+          <p>Computer: <span id="computer_count">0</span></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main-oop.js"></script>
+  </body>
+</html>

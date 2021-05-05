@@ -1,0 +1,179 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --s: 50px;
+  --borderColor: #bfbfbf;
+  --activeColor: #f3f331;
+  --successColor: green;
+  --errorColor: red;
+}
+
+p {
+  margin: 0;
+}
+
+.d-none {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.list {
+  max-width: 500px;
+  margin: 15px 0;
+}
+
+/* =CELLS */
+.cell {
+  background-color: #498fbd;
+  border-bottom: 1px solid var(--borderColor);
+  border-right: 1px solid var(--borderColor);
+  transition: background-color 0.3s;
+  height: var(--s);
+  width: var(--s);
+}
+
+.cell:nth-child(10n + 1) {
+  border-left: 1px solid var(--borderColor);
+}
+
+.cell:nth-child(-n + 10) {
+  border-top: 1px solid var(--borderColor);
+}
+
+.cell-active {
+  background-color: var(--activeColor);
+  cursor: pointer;
+}
+
+.cell-success {
+  background-color: var(--successColor);
+}
+
+.cell-error {
+  background-color: var(--errorColor);
+}
+/* =/CELLS */
+
+/* = BUTTON */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-start {
+  background-color: #009a00;
+  color: #fff;
+  border-radius: 3px;
+
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 10px 20px;
+
+  transition: box-shadow 0.3s;
+}
+
+.btn-start:hover {
+  box-shadow: 0 0 3px #000;
+}
+/* =/BUTTON */
+
+/*=CONTROLS
+---------------------------*/
+.error {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.form-control {
+  height: 28px;
+  font-size: 16px;
+}
+
+.online-score {
+  margin-top: 10px;
+}
+/*=/CONTROLS
+---------------------------*/
+
+/*=MODAL
+---------------------------*/
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+}
+
+.modal-inner {
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 50px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-inner .title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.modal-open .content {
+  filter: blur(5px);
+}
+
+.modal .close {
+  font-size: 16px;
+  font-weight: bold;
+
+  position: absolute;
+  right: 10px;
+  top: 0;
+  padding: 10px;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+  outline: 1px solid #000;
+}
+
+.score {
+  justify-content: center;
+}
+
+.score div {
+  padding: 0 10px;
+}
+
+.score span {
+  font-weight: bold;
+}
+/*=/MODAL
+---------------------------*/
