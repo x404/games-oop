@@ -113,7 +113,7 @@ class Game {
       document.querySelector(".cell-active").classList.add("cell-error");
       document.querySelector(".cell-active").classList.remove("cell-active");
 
-      console.log("prevId=", prevId);
+      //   console.log("prevId=", prevId);
       this.updateStatusCellInObj(prevId, "error");
     }
 
@@ -196,79 +196,3 @@ class Game {
     );
   }
 }
-
-// function updateStatusCellInObj(id, key) {
-//   objOfCells[id][key] = true;
-// }
-//click cell
-
-document.querySelector(".i-delay").addEventListener("keyup", function () {
-  if (this.value < 0) {
-    this.value = this.value.slice(1);
-  }
-});
-
-// Modal
-class Modal {
-  constructor(countSuccess, countError) {
-    this.init();
-    this.countSuccess = countSuccess;
-    this.countError = countError;
-  }
-
-  init() {
-    this.isOpened = false;
-  }
-
-  show() {
-    const html = `
-    <div class="modal">
-      <div class="modal-inner">
-        <p class="title">Score:</p>
-        <div class="d-flex score">
-          <div>You: ${this.countSuccess}</div>
-          <div>Computer: ${this.countError}</div>
-        </div>
-        <button type="button" class="close">x</button>
-      </div>
-    </div>
-    <div class="backdrop"></div>
-    `;
-    document.body.classList.add("modal-open");
-    document.body.insertAdjacentHTML("beforeend", html);
-
-    this.isOpened = true;
-    this.eventsListeners();
-  }
-
-  close() {
-    if (!this.isOpened) {
-      return;
-    }
-    document.body.classList.remove("modal-open");
-    document.querySelector(".backdrop").remove();
-    document.querySelector(".modal").remove();
-    document.querySelector(".btn-start").classList.remove("d-none");
-    this.isOpened = false;
-  }
-
-  eventsListeners() {
-    document.querySelector(".modal .close").addEventListener(
-      "click",
-      function (e) {
-        this.close();
-      }.bind(this)
-    );
-
-    window.addEventListener(
-      "keydown",
-      function (e) {
-        if (e.key === "Escape") {
-          this.close();
-        }
-      }.bind(this)
-    );
-  }
-}
-
-const newGame = new Game();
