@@ -4,9 +4,7 @@
 
 // create object and grid
 let objOfCells = {};
-const CELLCOUNTS = 100;
 
-const FINISHCOUNT = 10;
 let countSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
@@ -26,8 +24,9 @@ class Game {
    * @param {boolean} errorDelayValue - flag of negative or error of input#delay
    * @param {element} _gameDiv - main element for game
    * @param {function} fragment - element for accumulate cells
+   * @param {number} cellcounts - number of counts
+   * @param {number} finishcount - finish count
    *
-   * @param [array] data
    * @param [array] _attribute
    * @param [array] _element
    * @param [array] _header
@@ -38,14 +37,15 @@ class Game {
   #errorDelayValue = false;
   #fragment = document.createDocumentFragment();
 
-  constructor(gameDiv) {
+  constructor(cellcounts = 100, finishcount = 10, gameDiv) {
     this._gameDiv = gameDiv || document.querySelector(".list");
-    this.init();
+    this.cellcounts = cellcounts;
+    this.finishcount = finishcount;
   }
 
   init() {
-    if (CELLCOUNTS > 0 && typeof CELLCOUNTS === "number") {
-      for (let i = 1; i <= CELLCOUNTS; i++) {
+    if (this.cellcounts > 0 && typeof this.cellcounts === "number") {
+      for (let i = 1; i <= this.cellcounts; i++) {
         this.createObj(i);
         this.renderGrid(i);
       }
@@ -114,7 +114,7 @@ class Game {
 
     this.updateCountElements(countSuccess, countError);
 
-    if (countSuccess == FINISHCOUNT || countError == FINISHCOUNT) {
+    if (countSuccess == this.finishcount || countError == this.finishcount) {
       console.log("%c- STOP GAME -", "color: red;font-weight:bold");
       // console.log(objOfCells);
 
@@ -162,7 +162,7 @@ class Game {
     const _id = arr[rnd][1]._id;
 
     prevId = _id;
-    if (countError < FINISHCOUNT && countSuccess < FINISHCOUNT) {
+    if (countError < this.finishcount && countSuccess < this.finishcount) {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
     }

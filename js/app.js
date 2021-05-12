@@ -5,4 +5,9 @@ document.querySelector(".i-delay").addEventListener("keyup", function () {
   }
 });
 
-const newGame = new Game();
+// const el =
+let newGame = new Game();
+newGame.cellcounts = 100;
+newGame.finishcount = 10;
+newGame.gameDiv = document.querySelector(".list");
+newGame.init();
