@@ -16,7 +16,6 @@ class Game {
    * @param {element} userCountEl - user input element (html)
    * @param {element} computerCountEl - computer input element (html)
    * @param {timer} timer - timer
-   *
    * @param {number} countSuccess - count of succeful clicks
    * @param {number} countError - count of miss clicks
    *
