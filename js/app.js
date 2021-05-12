@@ -10,5 +10,7 @@ newGame.cellcounts = 100;
 newGame.finishcount = 10;
 newGame.gameDiv = document.querySelector(".list");
 newGame.timeoutEl = document.querySelector(".i-delay");
+newGame.userCountEl = document.querySelector("#user_count");
+newGame.computerCountEl = document.querySelector("#computer_count");
 
 newGame.init();

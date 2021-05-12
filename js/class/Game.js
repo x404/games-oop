@@ -5,9 +5,6 @@
 let countSuccess = 0;
 let countError = 0;
 
-const humanCountEl = document.querySelector("#human_count");
-const computerCountEl = document.querySelector("#computer_count");
-
 // =BLINK CELLS
 let timer;
 let prevId;
@@ -36,11 +33,21 @@ class Game {
   #errorDelayValue = false;
   #fragment = document.createDocumentFragment();
 
-  constructor(cellcounts = 100, finishcount = 10, timeoutEl, gameDiv) {
+  constructor(
+    cellcounts = 100,
+    finishcount = 10,
+    timeoutEl,
+    gameDiv,
+    userCountEl,
+    computerCountEl
+  ) {
     this.cellcounts = cellcounts;
     this.finishcount = finishcount;
     this.timeoutEl = timeoutEl || document.querySelector(".i-delay");
     this._gameDiv = gameDiv || document.querySelector(".list");
+
+    this.userCountEl = userCountEl || document.querySelector("#user_count");
+    this.computerCountEl = computerCountEl || document.querySelector("#computer_count");
   }
 
   init() {
@@ -129,8 +136,8 @@ class Game {
 
   // update num of Count Elements in HTML
   updateCountElements(countSuccess, countError) {
-    humanCountEl.textContent = countSuccess;
-    computerCountEl.textContent = countError;
+    this.userCountEl.textContent = countSuccess;
+    this.computerCountEl.textContent = countError;
   }
 
   // random number
