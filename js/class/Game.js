@@ -13,7 +13,7 @@ let start = false;
 let countSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
-let flag = false;
+
 let errorInput = false;
 
 const humanCountEl = document.querySelector("#human_count");
@@ -24,19 +24,36 @@ let timer;
 let prevId;
 
 class Game {
+  #flag = false;
+  /**
+   * properties
+   * @param [boolean] start
+   *
+   *
+   * @param [array] _tableClass
+   * @param [array] data
+   * @param [array] _attribute
+   * @param [array] _element
+   * @param [array] _header
+   */
   constructor() {
     this.init();
   }
 
   init() {
-    for (let i = 1; i <= CELLCOUNTS; i++) {
-      this.createObj(i);
-      this.renderGrid(i);
+    if (CELLCOUNTS > 0 && typeof CELLCOUNTS === "number") {
+      for (let i = 1; i <= CELLCOUNTS; i++) {
+        this.createObj(i);
+        this.renderGrid(i);
+      }
+      list.appendChild(fragment);
+      this.eventsListeners();
     }
-    list.appendChild(fragment);
-    this.eventsListeners();
   }
 
+  /**
+   * Method for create object
+   */
   createObj(id) {
     let obj = {};
     obj._id = id;
@@ -46,6 +63,9 @@ class Game {
     objOfCells[id] = obj;
   }
 
+  /**
+   * Method for render Grid
+   */
   renderGrid(id) {
     const div = document.createElement("div");
     div.classList.add("cell");
@@ -57,7 +77,7 @@ class Game {
   startGame() {
     timeout = +document.querySelector(".i-delay").value;
     if (timeout > 0 && typeof timeout === "number") {
-      if (start) reset();
+      if (start) this.reset();
       if (errorInput && document.querySelectorAll(".error").length > 0)
         document.querySelector(".error").remove();
       // starting position
@@ -117,7 +137,7 @@ class Game {
   // blink cell
   blinkCell() {
     //  if cell was active and no pressed it
-    if (!flag) {
+    if (!this.#flag) {
       document.querySelector(".cell-active").classList.add("cell-error");
       document.querySelector(".cell-active").classList.remove("cell-active");
       this.updateStatusCellInObj(prevId, "error");
@@ -141,7 +161,7 @@ class Game {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
     }
-    flag = false;
+    this.#flag = false;
   }
 
   // update status Cell in Object
@@ -154,7 +174,7 @@ class Game {
     const target = e.target;
     if (target.classList.contains("cell-active")) {
       const id = target.dataset.id;
-      flag = true;
+      this.#flag = true;
       this.updateStatusCellInObj(id, "success");
 
       if (this.checkResult()) {
@@ -166,6 +186,30 @@ class Game {
       target.classList.remove("cell-active");
       target.classList.add("cell-success");
     }
+  }
+
+  reset() {
+    for (let key in objOfCells) {
+      objOfCells[key].success = false;
+      objOfCells[key].error = false;
+    }
+
+    if (document.querySelectorAll(".cell-error").length > 0) {
+      document.querySelectorAll(".cell-error").forEach((el) => {
+        el.classList.remove("cell-error");
+      });
+    }
+
+    if (document.querySelectorAll(".cell-success").length > 0) {
+      document.querySelectorAll(".cell-success").forEach((el) => {
+        el.classList.remove("cell-success");
+      });
+    }
+    prevId = null;
+    countSuccess = 0;
+    countError = 0;
+
+    this.updateCountElements(countSuccess, countError);
   }
 
   eventsListeners() {
