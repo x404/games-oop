@@ -2,9 +2,6 @@
  * Game
  */
 
-// create object and grid
-let objOfCells = {};
-
 let countSuccess = 0;
 let countError = 0;
 
@@ -18,6 +15,7 @@ let prevId;
 class Game {
   /**
    * properties
+   * @param {object}  objOfCells - object of cells
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    * @param {boolean} start - start game. need to reset all params before repeat start game.
    * @param {boolean} errorDelayValue - flag of negative or error of input#delay
@@ -28,11 +26,11 @@ class Game {
    * @param {element} timeoutEl - delay input element
    *
    *
-   * @param [array] _attribute
    * @param [array] _element
    * @param [array] _header
    */
 
+  #objOfCells = {};
   #clickCellFlag = false;
   #start = false;
   #errorDelayValue = false;
@@ -65,7 +63,7 @@ class Game {
     obj.success = false;
     obj.error = false;
 
-    objOfCells[id] = obj;
+    this.#objOfCells[id] = obj;
   }
 
   /**
@@ -87,7 +85,7 @@ class Game {
         document.querySelector(".error").remove();
       }
       // starting position
-      const arr = Object.entries(objOfCells);
+      const arr = Object.entries(this.#objOfCells);
       const rnd = this.randomInteger(arr.length - 1);
       const _id = arr[rnd][1]._id;
 
@@ -111,14 +109,14 @@ class Game {
 
   // check data (success and error cells) in Object
   checkResult() {
-    countSuccess = Object.entries(objOfCells).filter((el) => el[1].success == true).length;
-    countError = Object.entries(objOfCells).filter((el) => el[1].error == true).length;
+    countSuccess = Object.entries(this.#objOfCells).filter((el) => el[1].success == true).length;
+    countError = Object.entries(this.#objOfCells).filter((el) => el[1].error == true).length;
 
     this.updateCountElements(countSuccess, countError);
 
     if (countSuccess == this.finishcount || countError == this.finishcount) {
       console.log("%c- STOP GAME -", "color: red;font-weight:bold");
-      // console.log(objOfCells);
+      // console.log(this.#objOfCells);
 
       const newModal = new Modal(countSuccess, countError);
       newModal.show();
@@ -150,7 +148,7 @@ class Game {
       this.updateStatusCellInObj(prevId, "error");
     }
 
-    const arr = Object.entries(objOfCells).filter(
+    const arr = Object.entries(this.#objOfCells).filter(
       (el) => el[1].error == false && el[1].success == false
     );
 
@@ -174,7 +172,7 @@ class Game {
 
   // update status Cell in Object
   updateStatusCellInObj(id, key) {
-    objOfCells[id][key] = true;
+    this.#objOfCells[id][key] = true;
   }
 
   // update Status Cell in Grid and update status in Object
@@ -197,9 +195,9 @@ class Game {
   }
 
   reset() {
-    for (let key in objOfCells) {
-      objOfCells[key].success = false;
-      objOfCells[key].error = false;
+    for (let key in this.#objOfCells) {
+      this.#objOfCells[key].success = false;
+      this.#objOfCells[key].error = false;
     }
 
     if (document.querySelectorAll(".cell-error").length > 0) {
