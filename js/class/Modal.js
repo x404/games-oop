@@ -17,10 +17,10 @@ class Modal {
     const html = `
 	  <div class="modal">
 		<div class="modal-inner">
-		  <p class="title">Score:</p>
+		  <p class="title">Счет:</p>
 		  <div class="d-flex score">
-			<div>You: ${this.countSuccess}</div>
-			<div>Computer: ${this.countError}</div>
+			<div>Вы: ${this.countSuccess}</div>
+			<div>Компьютер: ${this.countError}</div>
 		  </div>
 		  <button type="button" class="close">x</button>
 		</div>
