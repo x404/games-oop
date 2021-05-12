@@ -186,7 +186,7 @@ class Game {
       if (this.checkResult()) {
         clearInterval(timer);
         this.blinkCell();
-        timer = setInterval(this.blinkCell.bind(this), timeout);
+        timer = setInterval(this.blinkCell.bind(this), this.timeout);
       }
 
       target.classList.remove("cell-active");
