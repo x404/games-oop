@@ -13,8 +13,6 @@ let countSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
 
-let errorInput = false;
-
 const humanCountEl = document.querySelector("#human_count");
 const computerCountEl = document.querySelector("#computer_count");
 
@@ -27,6 +25,8 @@ class Game {
    * properties
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    * @param {boolean} start - start game. need to reset all params before repeat start game.
+   * @param {boolean} errorDelayValue - flag of negative or error of input#delay
+   *
    * @param [array] _tableClass
    * @param [array] data
    * @param [array] _attribute
@@ -36,6 +36,7 @@ class Game {
 
   #clickCellFlag = false;
   #start = false;
+  #errorDelayValue = false;
 
   constructor() {
     this.init();
@@ -79,8 +80,9 @@ class Game {
     timeout = +document.querySelector(".i-delay").value;
     if (timeout > 0 && typeof timeout === "number") {
       if (this.#start) this.reset();
-      if (errorInput && document.querySelectorAll(".error").length > 0)
+      if (this.#errorDelayValue && document.querySelectorAll(".error").length > 0) {
         document.querySelector(".error").remove();
+      }
       // starting position
       const arr = Object.entries(objOfCells);
       const rnd = this.randomInteger(arr.length - 1);
@@ -94,12 +96,10 @@ class Game {
       prevId = _id;
       timer = setInterval(this.blinkCell.bind(this), timeout);
       this.#start = true;
-      errorInput = false;
-    } else {
-      if (!errorInput) {
-        list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
-      }
-      errorInput = true;
+      this.#errorDelayValue = false;
+    } else if (!this.#errorDelayValue) {
+      list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
+      this.#errorDelayValue = true;
     }
   }
 
@@ -162,6 +162,7 @@ class Game {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
     }
+
     this.#clickCellFlag = false;
   }
 
