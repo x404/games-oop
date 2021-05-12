@@ -9,7 +9,6 @@ const fragment = document.createDocumentFragment();
 const list = document.querySelector(".list");
 
 const FINISHCOUNT = 10;
-let start = false;
 let countSuccess = 0;
 let countError = 0;
 let timeout = +document.querySelector(".i-delay").value;
@@ -27,7 +26,7 @@ class Game {
   /**
    * properties
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
-   *
+   * @param {boolean} start - start game. need to reset all params before repeat start game.
    * @param [array] _tableClass
    * @param [array] data
    * @param [array] _attribute
@@ -36,6 +35,8 @@ class Game {
    */
 
   #clickCellFlag = false;
+  #start = false;
+
   constructor() {
     this.init();
   }
@@ -77,7 +78,7 @@ class Game {
   startGame() {
     timeout = +document.querySelector(".i-delay").value;
     if (timeout > 0 && typeof timeout === "number") {
-      if (start) this.reset();
+      if (this.#start) this.reset();
       if (errorInput && document.querySelectorAll(".error").length > 0)
         document.querySelector(".error").remove();
       // starting position
@@ -92,7 +93,7 @@ class Game {
       // start timer
       prevId = _id;
       timer = setInterval(this.blinkCell.bind(this), timeout);
-      start = true;
+      this.#start = true;
       errorInput = false;
     } else {
       if (!errorInput) {
