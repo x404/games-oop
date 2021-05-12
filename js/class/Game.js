@@ -5,10 +5,6 @@
 let countSuccess = 0;
 let countError = 0;
 
-// =BLINK CELLS
-let timer;
-let prevId;
-
 class Game {
   /**
    * properties
@@ -21,6 +17,9 @@ class Game {
    * @param {number} cellcounts - number of counts
    * @param {number} finishcount - finish count
    * @param {element} timeoutEl - delay input element
+   * @param {element} userCountEl - user input element (html)
+   * @param {element} computerCountEl - computer input element (html)
+   * @param {timer} timer - timer
    *
    *
    * @param [array] _element
@@ -32,6 +31,8 @@ class Game {
   #start = false;
   #errorDelayValue = false;
   #fragment = document.createDocumentFragment();
+  #timer;
+  #prevId;
 
   constructor(
     cellcounts = 100,
@@ -101,8 +102,8 @@ class Game {
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
 
       // start timer
-      prevId = _id;
-      timer = setInterval(this.blinkCell.bind(this), this.timeout);
+      this.#prevId = _id;
+      this.#timer = setInterval(this.blinkCell.bind(this), this.timeout);
       this.#start = true;
       this.#errorDelayValue = false;
     } else if (!this.#errorDelayValue) {
@@ -128,7 +129,7 @@ class Game {
       const newModal = new Modal(countSuccess, countError);
       newModal.show();
 
-      clearInterval(timer);
+      clearInterval(this.#timer);
       return false;
     }
     return true;
@@ -152,7 +153,7 @@ class Game {
     if (!this.#clickCellFlag) {
       document.querySelector(".cell-active").classList.add("cell-error");
       document.querySelector(".cell-active").classList.remove("cell-active");
-      this.updateStatusCellInObj(prevId, "error");
+      this.updateStatusCellInObj(this.#prevId, "error");
     }
 
     const arr = Object.entries(this.#objOfCells).filter(
@@ -160,7 +161,7 @@ class Game {
     );
 
     if (arr.length === 0 || !this.checkResult()) {
-      clearInterval(timer);
+      clearInterval(this.#timer);
       return;
     }
 
@@ -168,7 +169,7 @@ class Game {
     const rnd = this.randomInteger(arr.length - 1);
     const _id = arr[rnd][1]._id;
 
-    prevId = _id;
+    this.#prevId = _id;
     if (countError < this.finishcount && countSuccess < this.finishcount) {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
@@ -191,9 +192,9 @@ class Game {
       this.updateStatusCellInObj(id, "success");
 
       if (this.checkResult()) {
-        clearInterval(timer);
+        clearInterval(this.#timer);
         this.blinkCell();
-        timer = setInterval(this.blinkCell.bind(this), this.timeout);
+        this.#timer = setInterval(this.blinkCell.bind(this), this.timeout);
       }
 
       target.classList.remove("cell-active");
@@ -218,7 +219,7 @@ class Game {
         el.classList.remove("cell-success");
       });
     }
-    prevId = null;
+    this.#prevId = null;
     countSuccess = 0;
     countError = 0;
 
