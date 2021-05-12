@@ -8,7 +8,7 @@ class Game {
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    * @param {boolean} start - start game. need to reset all params before repeat start game.
    * @param {boolean} errorDelayValue - flag of negative or error of input#delay
-   * @param {element} _gameDiv - main element for game
+   * @param {element} gameDiv - main element for game
    * @param {function} fragment - element for accumulate cells
    * @param {number} cellcounts - number of counts
    * @param {number} finishcount - finish count
@@ -43,7 +43,7 @@ class Game {
     this.cellcounts = cellcounts;
     this.finishcount = finishcount;
     this.timeoutEl = timeoutEl || document.querySelector(".i-delay");
-    this._gameDiv = gameDiv || document.querySelector(".list");
+    this.gameDiv = gameDiv || document.querySelector(".list");
 
     this.userCountEl = userCountEl || document.querySelector("#user_count");
     this.computerCountEl = computerCountEl || document.querySelector("#computer_count");
@@ -57,7 +57,7 @@ class Game {
         this.createObj(i);
         this.renderGrid(i);
       }
-      this._gameDiv.appendChild(this.#fragment);
+      this.gameDiv.appendChild(this.#fragment);
       this.eventsListeners();
     }
   }
@@ -67,7 +67,7 @@ class Game {
    */
   createObj(id) {
     let obj = {};
-    obj._id = id;
+    obj.id = id;
     obj.success = false;
     obj.error = false;
 
@@ -95,19 +95,19 @@ class Game {
       // starting position
       const arr = Object.entries(this.#objOfCells);
       const rnd = this.randomInteger(arr.length - 1);
-      const _id = arr[rnd][1]._id;
+      const id = arr[rnd][1].id;
 
       document.querySelector(".btn-start").classList.add("d-none");
       // set active cell
-      document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
+      document.querySelector(`[data-id="${id}"]`).classList.add("cell-active");
 
       // start timer
-      this.#prevId = _id;
+      this.#prevId = id;
       this.#timer = setInterval(this.blinkCell.bind(this), this.timeout);
       this.#start = true;
       this.#errorDelayValue = false;
     } else if (!this.#errorDelayValue) {
-      this._gameDiv.insertAdjacentHTML(
+      this.gameDiv.insertAdjacentHTML(
         "beforeend",
         '<p class="error">Введите число больше нуля!</p>'
       );
@@ -169,12 +169,12 @@ class Game {
 
     // select random element from array
     const rnd = this.randomInteger(arr.length - 1);
-    const _id = arr[rnd][1]._id;
+    const id = arr[rnd][1].id;
 
-    this.#prevId = _id;
+    this.#prevId = id;
     if (this.countError < this.finishcount && this.countSuccess < this.finishcount) {
       // set active next cell in html
-      document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
+      document.querySelector(`[data-id="${id}"]`).classList.add("cell-active");
     }
 
     this.#clickCellFlag = false;
