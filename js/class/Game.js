@@ -5,7 +5,6 @@
 // create object and grid
 let objOfCells = {};
 const CELLCOUNTS = 100;
-const fragment = document.createDocumentFragment();
 
 const FINISHCOUNT = 10;
 let countSuccess = 0;
@@ -25,7 +24,8 @@ class Game {
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    * @param {boolean} start - start game. need to reset all params before repeat start game.
    * @param {boolean} errorDelayValue - flag of negative or error of input#delay
-   * @param {} _gameDiv - main element for game
+   * @param {element} _gameDiv - main element for game
+   * @param {function} fragment - element for accumulate cells
    *
    * @param [array] data
    * @param [array] _attribute
@@ -36,6 +36,7 @@ class Game {
   #clickCellFlag = false;
   #start = false;
   #errorDelayValue = false;
+  #fragment = document.createDocumentFragment();
 
   constructor(gameDiv) {
     this._gameDiv = gameDiv || document.querySelector(".list");
@@ -48,7 +49,7 @@ class Game {
         this.createObj(i);
         this.renderGrid(i);
       }
-      this._gameDiv.appendChild(fragment);
+      this._gameDiv.appendChild(this.#fragment);
       this.eventsListeners();
     }
   }
@@ -72,7 +73,7 @@ class Game {
     const div = document.createElement("div");
     div.classList.add("cell");
     div.dataset.id = id;
-    fragment.appendChild(div);
+    this.#fragment.appendChild(div);
   }
 
   // start game
