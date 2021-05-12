@@ -2,8 +2,8 @@
  * Game
  */
 
-let countSuccess = 0;
-let countError = 0;
+// let countSuccess = 0;
+// let countError = 0;
 
 class Game {
   /**
@@ -21,6 +21,8 @@ class Game {
    * @param {element} computerCountEl - computer input element (html)
    * @param {timer} timer - timer
    *
+   * @param {number} _countSuccess - count of succeful clicks
+   * @param {number} _countError - count of miss clicks
    *
    * @param [array] _element
    * @param [array] _header
@@ -40,7 +42,9 @@ class Game {
     timeoutEl,
     gameDiv,
     userCountEl,
-    computerCountEl
+    computerCountEl,
+    countSuccess = 0,
+    countError = 0
   ) {
     this.cellcounts = cellcounts;
     this.finishcount = finishcount;
@@ -49,6 +53,8 @@ class Game {
 
     this.userCountEl = userCountEl || document.querySelector("#user_count");
     this.computerCountEl = computerCountEl || document.querySelector("#computer_count");
+    this._countSuccess = countSuccess;
+    this._countError = countError;
   }
 
   init() {
@@ -60,6 +66,14 @@ class Game {
       this._gameDiv.appendChild(this.#fragment);
       this.eventsListeners();
     }
+  }
+
+  set countSuccess(value) {
+    this._countSuccess = value;
+  }
+
+  get countSuccess() {
+    return this._countSuccess;
   }
 
   /**
@@ -117,16 +131,18 @@ class Game {
 
   // check data (success and error cells) in Object
   checkResult() {
-    countSuccess = Object.entries(this.#objOfCells).filter((el) => el[1].success == true).length;
-    countError = Object.entries(this.#objOfCells).filter((el) => el[1].error == true).length;
+    this._countSuccess = Object.entries(this.#objOfCells).filter(
+      (el) => el[1].success == true
+    ).length;
+    this._countError = Object.entries(this.#objOfCells).filter((el) => el[1].error == true).length;
 
-    this.updateCountElements(countSuccess, countError);
+    this.updateCountElements(this._countSuccess, this._countError);
 
-    if (countSuccess == this.finishcount || countError == this.finishcount) {
+    if (this._countSuccess == this.finishcount || this._countError == this.finishcount) {
       console.log("%c- STOP GAME -", "color: red;font-weight:bold");
       // console.log(this.#objOfCells);
 
-      const newModal = new Modal(countSuccess, countError);
+      const newModal = new Modal(this._countSuccess, this._countError);
       newModal.show();
 
       clearInterval(this.#timer);
@@ -170,7 +186,7 @@ class Game {
     const _id = arr[rnd][1]._id;
 
     this.#prevId = _id;
-    if (countError < this.finishcount && countSuccess < this.finishcount) {
+    if (this._countError < this.finishcount && this._countSuccess < this.finishcount) {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
     }
@@ -220,10 +236,10 @@ class Game {
       });
     }
     this.#prevId = null;
-    countSuccess = 0;
-    countError = 0;
+    this._countSuccess = 0;
+    this._countError = 0;
 
-    this.updateCountElements(countSuccess, countError);
+    this.updateCountElements(this._countSuccess, this._countError);
   }
 
   eventsListeners() {
