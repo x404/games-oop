@@ -7,7 +7,6 @@ let objOfCells = {};
 
 let countSuccess = 0;
 let countError = 0;
-let timeout = +document.querySelector(".i-delay").value;
 
 const humanCountEl = document.querySelector("#human_count");
 const computerCountEl = document.querySelector("#computer_count");
@@ -26,6 +25,8 @@ class Game {
    * @param {function} fragment - element for accumulate cells
    * @param {number} cellcounts - number of counts
    * @param {number} finishcount - finish count
+   * @param {element} timeoutEl - delay input element
+   *
    *
    * @param [array] _attribute
    * @param [array] _element
@@ -37,10 +38,11 @@ class Game {
   #errorDelayValue = false;
   #fragment = document.createDocumentFragment();
 
-  constructor(cellcounts = 100, finishcount = 10, gameDiv) {
-    this._gameDiv = gameDiv || document.querySelector(".list");
+  constructor(cellcounts = 100, finishcount = 10, timeoutEl, gameDiv) {
     this.cellcounts = cellcounts;
     this.finishcount = finishcount;
+    this.timeoutEl = timeoutEl || document.querySelector(".i-delay");
+    this._gameDiv = gameDiv || document.querySelector(".list");
   }
 
   init() {
@@ -78,8 +80,8 @@ class Game {
 
   // start game
   startGame() {
-    timeout = +document.querySelector(".i-delay").value;
-    if (timeout > 0 && typeof timeout === "number") {
+    this.timeout = +this.timeoutEl.value || 1500;
+    if (this.timeout > 0 && typeof this.timeout === "number") {
       if (this.#start) this.reset();
       if (this.#errorDelayValue && document.querySelectorAll(".error").length > 0) {
         document.querySelector(".error").remove();
@@ -95,7 +97,7 @@ class Game {
 
       // start timer
       prevId = _id;
-      timer = setInterval(this.blinkCell.bind(this), timeout);
+      timer = setInterval(this.blinkCell.bind(this), this.timeout);
       this.#start = true;
       this.#errorDelayValue = false;
     } else if (!this.#errorDelayValue) {

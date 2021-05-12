@@ -5,9 +5,10 @@ document.querySelector(".i-delay").addEventListener("keyup", function () {
   }
 });
 
-// const el =
 let newGame = new Game();
 newGame.cellcounts = 100;
 newGame.finishcount = 10;
 newGame.gameDiv = document.querySelector(".list");
+newGame.timeoutEl = document.querySelector(".i-delay");
+
 newGame.init();
