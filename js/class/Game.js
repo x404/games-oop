@@ -1,4 +1,4 @@
-/*
+/**
  * Game
  */
 
@@ -6,7 +6,6 @@
 let objOfCells = {};
 const CELLCOUNTS = 100;
 const fragment = document.createDocumentFragment();
-const list = document.querySelector(".list");
 
 const FINISHCOUNT = 10;
 let countSuccess = 0;
@@ -26,8 +25,8 @@ class Game {
    * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    * @param {boolean} start - start game. need to reset all params before repeat start game.
    * @param {boolean} errorDelayValue - flag of negative or error of input#delay
+   * @param {} _gameDiv - main element for game
    *
-   * @param [array] _tableClass
    * @param [array] data
    * @param [array] _attribute
    * @param [array] _element
@@ -38,7 +37,8 @@ class Game {
   #start = false;
   #errorDelayValue = false;
 
-  constructor() {
+  constructor(gameDiv) {
+    this._gameDiv = gameDiv || document.querySelector(".list");
     this.init();
   }
 
@@ -48,7 +48,7 @@ class Game {
         this.createObj(i);
         this.renderGrid(i);
       }
-      list.appendChild(fragment);
+      this._gameDiv.appendChild(fragment);
       this.eventsListeners();
     }
   }
@@ -98,7 +98,10 @@ class Game {
       this.#start = true;
       this.#errorDelayValue = false;
     } else if (!this.#errorDelayValue) {
-      list.insertAdjacentHTML("beforeend", '<p class="error">Введите число больше нуля!</p>');
+      this._gameDiv.insertAdjacentHTML(
+        "beforeend",
+        '<p class="error">Введите число больше нуля!</p>'
+      );
       this.#errorDelayValue = true;
     }
   }
