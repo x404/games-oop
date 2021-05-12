@@ -1,10 +1,6 @@
 /**
  * Game
  */
-
-// let countSuccess = 0;
-// let countError = 0;
-
 class Game {
   /**
    * properties
