@@ -3,7 +3,7 @@
  */
 
 class Modal {
-  constructor(countSuccess, countError) {
+  constructor(countSuccess = 0, countError = 0) {
     this.init();
     this.countSuccess = countSuccess;
     this.countError = countError;
