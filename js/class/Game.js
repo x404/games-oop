@@ -24,11 +24,9 @@ let timer;
 let prevId;
 
 class Game {
-  #flag = false;
   /**
    * properties
-   * @param [boolean] start
-   *
+   * @param {boolean} clickCellFlag - whether the cell was clicked by user, need for updateStatusCellInObj to change status cell to error
    *
    * @param [array] _tableClass
    * @param [array] data
@@ -36,6 +34,8 @@ class Game {
    * @param [array] _element
    * @param [array] _header
    */
+
+  #clickCellFlag = false;
   constructor() {
     this.init();
   }
@@ -137,7 +137,7 @@ class Game {
   // blink cell
   blinkCell() {
     //  if cell was active and no pressed it
-    if (!this.#flag) {
+    if (!this.#clickCellFlag) {
       document.querySelector(".cell-active").classList.add("cell-error");
       document.querySelector(".cell-active").classList.remove("cell-active");
       this.updateStatusCellInObj(prevId, "error");
@@ -161,7 +161,7 @@ class Game {
       // set active next cell in html
       document.querySelector(`[data-id="${_id}"]`).classList.add("cell-active");
     }
-    this.#flag = false;
+    this.#clickCellFlag = false;
   }
 
   // update status Cell in Object
@@ -174,7 +174,7 @@ class Game {
     const target = e.target;
     if (target.classList.contains("cell-active")) {
       const id = target.dataset.id;
-      this.#flag = true;
+      this.#clickCellFlag = true;
       this.updateStatusCellInObj(id, "success");
 
       if (this.checkResult()) {
